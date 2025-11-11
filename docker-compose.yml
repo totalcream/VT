@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80" # Map host port 3000 to container port 80 (Nginx default)
+    volumes:
+      - ./frontend:/app # Mount the frontend directory for development (optional, but useful)
+    depends_on:
+      - backend # Ensure backend starts before frontend
