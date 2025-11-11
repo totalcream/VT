@@ -1,5 +1,5 @@
 # VT (Vive Trading)
-FastAPI 기반 간단 REST API 서버
+FastAPI(Backend)와 React(Frontend)를 사용하는 풀스택 애플리케이션입니다.
 
 ---
 
@@ -7,8 +7,8 @@ FastAPI 기반 간단 REST API 서버
 | 항목 | 내용 |
 |---|---|
 | OS | Ubuntu 24.04 (권장) |
-| 필수 프로그램 | Docker |
-| 네트워크 | Port `8000` 오픈 |
+| 필수 프로그램 | Docker, Docker Compose |
+| 네트워크 | Port `3000`, `8000` 오픈 |
 
 ---
 
@@ -20,25 +20,22 @@ git clone https://github.com/totalcream/VT.git
 cd VT
 ```
 
-### 2) Docker 이미지 빌드
+### 2) 애플리케이션 실행
+아래 명령어 하나로 백엔드와 프론트엔드 서비스가 모두 빌드되고 실행됩니다.
 ```bash
-docker build -t fastapi-test-app .
+docker compose up --build -d
 ```
 
-### 3) 컨테이너 실행
+### 3) 실행 확인
 ```bash
-docker run -d -p 8000:8000 --name my-fastapi-app fastapi-test-app:latest
-```
-
-### 4) 실행 확인
-```bash
-docker ps
+docker compose ps
 ```
 
 예시 출력:
 ```
-CONTAINER ID   IMAGE                     COMMAND                  CREATED         STATUS         PORTS                                         NAMES
-fc5206e632ee   fastapi-test-app:latest   "uvicorn main:app --…"   4 seconds ago   Up 3 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   my-fastapi-app
+NAME                IMAGE               COMMAND                  SERVICE             CREATED             STATUS              PORTS
+fastapi_test_prj-backend-1    fastapi_test_prj-backend    "uvicorn main:app --…"   backend             2 minutes ago       Up 2 minutes        0.0.0.0:8000->8000/tcp
+fastapi_test_prj-frontend-1   fastapi_test_prj-frontend   "nginx -g 'daemon of…"   frontend            2 minutes ago       Up 2 minutes        0.0.0.0:3000->80/tcp
 ```
 
 ---
@@ -47,15 +44,16 @@ fc5206e632ee   fastapi-test-app:latest   "uvicorn main:app --…"   4 seconds ag
 
 | 환경 | 접속 URL |
 |---|---|
-| 로컬 접속 | http://localhost:8000 |
-| 외부 IP 접속 | http://<서버-IP>:8000 |
+| 로컬 접속 | http://localhost:3000 |
+| 외부 IP 접속 | http://<서버-IP>:3000 |
 
 ---
 
-## 컨테이너 / 이미지 관리
+## 컨테이너 관리
 
 | 작업 | 명령어 |
 |---|---|
-| 컨테이너 중지 | `docker stop my-fastapi-app` |
-| 컨테이너 삭제 | `docker rm my-fastapi-app` |
-| 이미지 삭제 | `docker rmi fastapi-test-app` |
+| 전체 서비스 중지 | `docker compose stop` |
+| 전체 서비스 내리기 (중지 및 컨테이너 삭제) | `docker compose down` |
+| 전체 서비스 로그 확인 | `docker compose logs -f` |
+| 특정 서비스 로그 확인 (예: frontend) | `docker compose logs -f frontend` |
