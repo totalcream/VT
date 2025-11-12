@@ -7,8 +7,14 @@ router = APIRouter()
 @router.post("/trade-decision", response_model=TradeDecision)
 async def generate_trade_decision(request: LLMRequest):
     """
-    사용자 데이터와 모델 이름을 받아 vLLM에 트레이딩 결정을 요청하고,
-    검증된 JSON 형식의 트레이딩 결정을 반환합니다.
+    LLM을 이용한 트레이딩 결정 생성 API.
+
+    Request Body:
+    - **user_data_prompt (str)**: 분석을 위한 시장 데이터 및 계좌 정보.
+    - **model_name (str)**: 사용할 LLM 모델 이름.
+
+    Returns:
+    - **TradeDecision**: LLM이 생성하고 Pydantic 모델로 검증된 JSON 형식의 트레이딩 결정.
     """
     try:
         # 서비스 함수에 모델 이름과 프롬프트를 전달

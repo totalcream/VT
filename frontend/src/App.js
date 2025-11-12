@@ -46,11 +46,20 @@ const modelOptions = [
 ];
 
 function App() {
+    // State for the user data prompt text area
     const [prompt, setPrompt] = useState(defaultPrompt);
+    // State for the selected LLM model from the dropdown
     const [selectedModel, setSelectedModel] = useState("openai/gpt-oss-120b");
+    // State to manage the loading status while waiting for the API response
     const [isLoading, setIsLoading] = useState(false);
+    // State to store the response from the LLM API
     const [llmResponse, setLlmResponse] = useState('');
 
+    /**
+     * Handles the form submission when the "Send to LLM" button is clicked.
+     * It sets the loading state, sends the request to the backend API,
+     * and updates the response state with the result or an error message.
+     */
     const handleSubmit = async () => {
         setIsLoading(true);
         setLlmResponse('');

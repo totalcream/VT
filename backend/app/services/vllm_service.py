@@ -46,7 +46,18 @@ You MUST follow this exact process:
 # 3. vLLM 호출 및 결과 파싱/검증을 위한 서비스 함수
 async def get_trade_decision(user_data_prompt: str, model_name: str) -> TradeDecision:
     """
-    vLLM에 접속하여 트레이딩 결정을 요청하고, 결과를 검증하여 반환합니다.
+    지정된 LLM 모델을 사용하여 vLLM API에 트레이딩 결정을 요청합니다.
+
+    Args:
+        user_data_prompt (str): 시장 데이터, 계좌 정보 등이 포함된 사용자 프롬프트 문자열.
+        model_name (str): API를 호출할 때 사용할 LLM 모델의 이름.
+
+    Raises:
+        ValueError: LLM의 응답이 유효한 JSON 형식이 아닐 경우.
+        Exception: vLLM API 통신 중 다른 오류가 발생했을 경우.
+
+    Returns:
+        TradeDecision: Pydantic 모델로 검증된 트레이딩 결정 객체.
     """
     try:
         completion = client.chat.completions.create(
